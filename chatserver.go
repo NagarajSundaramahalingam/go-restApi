@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"sort"
 	"sync"
@@ -155,6 +156,12 @@ func (m *messageHandlers) getUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("panic occurred:", err)
+		}
+	}()
+
 	messageHandlers := NewMessageHandlers()
 
 	srv := &http.Server{
