@@ -115,6 +115,12 @@ func (m *messageHandlers) postMessage(w http.ResponseWriter, r *http.Request) {
 	m.messages = append(m.messages, message)
 	m.users[message.User] = true
 	defer m.Unlock()
+
+	w.Header().Set(ContentType, ApplicationJson)
+	w.WriteHeader(http.StatusOK)
+	postSuccess := map[string]bool{"ok": true}
+	postSuccessByte, _ := json.Marshal(postSuccess)
+	w.Write(postSuccessByte)
 }
 
 func NewMessageHandlers() *messageHandlers {

@@ -67,6 +67,11 @@ func TestPostAndGetMessages(t *testing.T) {
 		t.Errorf("expected %d but got %d\n", http.StatusOK, res.StatusCode)
 	}
 
+	if res.Header.Get(ContentType) != ApplicationJson {
+		t.Errorf("expected %q but got %q\n", ApplicationJson, res.Header.Get(ContentType))
+	}
+
+
 	req = httptest.NewRequest(http.MethodGet, URL+Msgs, nil)
 	req.Header.Add(ContentType, ApplicationJson)
 	w = httptest.NewRecorder()
