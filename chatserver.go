@@ -73,6 +73,7 @@ func (m *messageHandlers) getMessages(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 	w.Header().Set(ContentType, ApplicationJson)
@@ -141,18 +142,19 @@ func (m *messageHandlers) getUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	m.Unlock()
 
-	jsonBytes, err := json.Marshal(
+	userBytes, err := json.Marshal(
 		map[string][]string{Users: users},
 	)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
+		return
 	}
 
 	w.Header().Set(ContentType, ApplicationJson)
 	w.WriteHeader(http.StatusOK)
-	w.Write(jsonBytes)
+	w.Write(userBytes)
 }
 
 func main() {
